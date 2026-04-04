@@ -359,6 +359,43 @@
     letter-spacing: 0.3px;
   }
 
+
+  /* ── PDF BUTTON ── */
+  .pdf-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 999;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    padding: 13px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(200,82,42,0.35);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .pdf-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(200,82,42,0.45);
+  }
+  .pdf-btn:active { transform: translateY(0); }
+  .pdf-btn svg { flex-shrink: 0; }
+
+  /* ── PRINT / PDF ── */
+  @media print {
+    html { background: none !important; }
+    body { width: 210mm !important; margin: 0 !important; }
+    .pdf-btn { display: none !important; }
+  }
+
   /* print */
   @media print {
     html { background: none; }
@@ -367,6 +404,16 @@
 </style>
 </head>
 <body>
+
+
+<button class="pdf-btn" onclick="downloadPDF()">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+    <polyline points="7 10 12 15 17 10"/>
+    <line x1="12" y1="15" x2="12" y2="3"/>
+  </svg>
+  Download PDF
+</button>
 
 <div class="layout">
 
@@ -625,6 +672,25 @@
 
   </main>
 </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+function downloadPDF() {
+  const btn = document.querySelector('.pdf-btn');
+  btn.style.display = 'none';
+  const opt = {
+    margin: 0,
+    filename: 'Dmitry_Timchuk_CV.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(document.body).save().then(() => {
+    btn.style.display = 'flex';
+  });
+}
+</script>
 
 </body>
 </html>
