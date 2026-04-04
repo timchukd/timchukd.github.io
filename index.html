@@ -232,7 +232,7 @@
   }
 
   /* ── EXPERIENCE ── */
-  .exp-item { margin-bottom: 7mm; break-inside: avoid; page-break-inside: avoid; }
+  .exp-item { margin-bottom: 7mm; }
   .exp-item:last-child { margin-bottom: 0; }
 
   .exp-header {
@@ -396,10 +396,40 @@
     .pdf-btn { display: none !important; }
   }
 
-  /* print */
+  /* ── PRINT / PDF ── */
   @media print {
-    html { background: none; }
-    body { width: 100%; }
+    html {
+      background: none !important;
+    }
+    body {
+      width: 210mm !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .pdf-btn {
+      display: none !important;
+    }
+    .layout {
+      min-height: 0 !important;
+    }
+    /* Prevent sidebar cutting */
+    .sidebar {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    /* Page break controls */
+    .exp-item {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    .section {
+      break-inside: avoid !important;
+    }
+    .highlights {
+      break-inside: avoid !important;
+    }
   }
 </style>
 </head>
@@ -596,7 +626,7 @@
           <li>Developed healthcare mobile apps integrating with Libre sensor, Fitbit, Apple Watch, and payment systems.</li>
         </ul>
 
-        <div style="break-before: page; page-break-before: always;"></div>
+        <div style="height:6px"></div>
 
         <div class="exp-header">
           <div class="exp-title">Lead Software Engineer</div>
@@ -674,21 +704,9 @@
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 function downloadPDF() {
-  const btn = document.querySelector('.pdf-btn');
-  btn.style.display = 'none';
-  const opt = {
-    margin: 0,
-    filename: 'Dmitry_Timchuk_CV.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-  html2pdf().set(opt).from(document.body).save().then(() => {
-    btn.style.display = 'flex';
-  });
+  window.print();
 }
 </script>
 
